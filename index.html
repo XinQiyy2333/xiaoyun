@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生日快乐，小云！</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        .container {
+            font-family: 'Arial, sans-serif';
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('https://photos.app.goo.gl/ERJhxPdiTHM6f4v58') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            text-align: center;
+        }
+        h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px #ff6f61;
+            animation: heartbeat 2s infinite;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+        h1:hover {
+            transform: scale(1.1);
+        }
+        p {
+            font-size: 1.5em;
+            line-height: 1.5;
+            margin-bottom: 30px;
+            animation: slideIn 2s;
+        }
+        .heart {
+            color: red;
+            font-size: 24px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particleCanvas"></canvas>
+
+    <div class="container">
+        <h1>生日快乐，小云！</h1>
+        <p>在这个特别的日子里，愿所有的欢笑和幸福都围绕着你。</p>
+        <p>即使我们无法在一起庆祝，但我的心永远与你相连。</p>
+        <p>愿你的每一个愿望都成真，每一天都充满阳光。</p>
+        <p class="heart"></p>
+        <p>生日快乐！</p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        const particles = [];
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        function Particle() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.vx = Math.random() * 2 - 1;
+            this.vy = Math.random() * 2 - 1;
+            this.size = Math.random() * 2 + 1;
+            this.color = '#ff6f61'; // 粒子颜色
+
+            this.update = function() {
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                }
+            }
+
+            this.draw = function() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+        }
+
+        function createParticles() {
+            for (let i = 0; i < 100; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+        }
+
+        createParticles();
+        animate();
+    </script>
+</body>
+</html>
